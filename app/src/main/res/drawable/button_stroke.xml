@@ -1,0 +1,10 @@
+<!-- edittext_stroke.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/blue"/> <!-- Fill with solid orange color -->
+    <stroke
+        android:width="0.2dp"
+        /> <!-- Orange color stroke -->
+    <corners
+        android:radius="5dp"/> <!-- Radius for rounded corners -->
+</shape>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <!-- Greeting text -->
+    <TextView
+        android:id="@+id/textViewGreeting"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Hello Again!"
+        android:textSize="46dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/orbitron"
+        android:textColor="@color/bluegrey"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Welcome message -->
+    <TextView
+        android:id="@+id/textViewWelcomeMessage"
+        android:layout_width="195dp"
+        android:layout_height="28dp"
+        android:fontFamily="@font/orbitron"
+        android:text="Welcome back, you have"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <!-- Username input -->
+    <TextView
+        android:id="@+id/textViewWelcomeMessage1"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/orbitron"
+        android:text="been missed!"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:fontFamily="@font/orbitron"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_stroke"/>
+
+    <!-- Password input -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:fontFamily="@font/orbitron"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:inputType="textPassword"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_stroke"/>
+
+    <!-- Sign in button -->
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="280dp"
+        android:layout_height="35dp"
+        android:textColor="@color/white"
+        android:text="SIGN IN"
+        android:background="@drawable/button_stroke"
+        android:color="@color/black"/>
+
+</LinearLayout>
