@@ -28,7 +28,7 @@
         android:textColor="@color/black"
         android:textSize="14sp" />
 
-    <!-- Username input -->
+    <!-- Welcome back message -->
     <TextView
         android:id="@+id/textViewWelcomeMessage1"
         android:layout_width="wrap_content"
@@ -39,6 +39,7 @@
         android:textColor="@color/black"
         android:textSize="14sp" />
 
+    <!-- Username input -->
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="280dp"
@@ -73,5 +74,4 @@
         android:text="SIGN IN"
         android:background="@drawable/button_stroke"
         android:color="@color/black"/>
-
 </LinearLayout>

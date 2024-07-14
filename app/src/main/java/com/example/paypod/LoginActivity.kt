@@ -4,64 +4,64 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.paypod.api.ApiClient
-import com.example.paypod.model.ErrorResponse
-import com.example.paypod.model.LoginRequest
-import com.example.paypod.model.LoginResponse
-import com.google.gson.Gson
+import android.widget.TextView
+import androidx.activity.ComponentActivity
+import com.example.paypod.api.RetrofitInstance
+import com.example.paypod.model.TokenResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity() {
-
-    private lateinit var editTextUsername: EditText
-    private lateinit var editTextPassword: EditText
-    private lateinit var buttonLogin: Button
-
+class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        editTextUsername = findViewById(R.id.editTextUsername)
-        editTextPassword = findViewById(R.id.editTextPassword)
-        buttonLogin = findViewById(R.id.buttonLogin)
+        val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+        val loginButton = findViewById<Button>(R.id.buttonLogin)
+        val messageTextView = findViewById<TextView>(R.id.textViewWelcomeMessage1)
 
-        buttonLogin.setOnClickListener {
-            val username = editTextUsername.text.toString()
-            val password = editTextPassword.text.toString()
-
-            login(username, password)
+        loginButton.setOnClickListener {
+            val username = usernameEditText.text.toString()
+            val password = passwordEditText.text.toString()
+            login(username, password) { success, message ->
+                if (success) {
+                    navigateToHistoryActivity()
+                } else {
+                    messageTextView.text = message
+                }
+            }
         }
     }
 
-    private fun login(username: String, password: String) {
-        val loginRequest = LoginRequest(username, password)
-        val call = ApiClient.apiService.login(loginRequest)
+    private fun navigateToHistoryActivity() {
+        val intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+    private fun login(username: String, password: String, onResult: (Boolean, String) -> Unit) {
+        val call = RetrofitInstance.api.login(
+            "soft-pos", username, password,
+            clientId = "softpos", clientSecret = "FV9nynZ6wFOrRvZ5wCvV5UrLAQ4QFdSu",
+            scope = "openid"
+        )
+
+        call.enqueue(object : Callback<TokenResponse> {
+            override fun onResponse(call: Call<TokenResponse>, response: Response<TokenResponse>) {
                 if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    // Handle successful login
-                    Toast.makeText(this@LoginActivity, "Welcome ${loginResponse?.firstName}!", Toast.LENGTH_SHORT).show()
-
-                    // Start DashboardActivity
-                    val intent = Intent(this@LoginActivity, HistoryActivity::class.java)
-                    startActivity(intent)
-                    finish() // Optionally finish the current activity to prevent going back to login screen
+                    val tokenResponse = response.body()
+                    tokenResponse?.let {
+                        onResult(true, "Login successful!")
+                    } ?: onResult(false, "Login failed: Empty response")
                 } else {
-                    // Handle error response
-                    val errorBody = response.errorBody()?.string()
-                    val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
-                    Toast.makeText(this@LoginActivity, errorResponse.message, Toast.LENGTH_SHORT).show()
+                    onResult(false, "Login failed: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
+                onResult(false, "Error: ${t.message}")
             }
         })
     }

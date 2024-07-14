@@ -83,5 +83,22 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.ui.test.junit4)
     implementation(libs.androidx.animation)
+
+    implementation(libs.androidx.core.ktx.v170)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v231)
+    implementation(libs.androidx.activity.compose.v131)
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.material)
+    implementation(libs.converter.gson.v250)
+    androidTestImplementation(libs.androidx.junit.v113)
+    androidTestImplementation(libs.androidx.espresso.core.v340)
+    androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.logging.interceptor.v490)
+    implementation(libs.androidx.activity.compose.v140)
 }
 
