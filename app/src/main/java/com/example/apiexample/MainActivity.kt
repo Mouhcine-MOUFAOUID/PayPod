@@ -146,7 +146,7 @@ fun sendRequest(
     transaction: MutableState<TransactionDTO>
 ) {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.83:9000/")
+        .baseUrl("http://192.168.1.88:9000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

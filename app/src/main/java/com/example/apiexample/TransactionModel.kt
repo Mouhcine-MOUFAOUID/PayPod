@@ -1,7 +1,4 @@
 package com.example.apiexample
-
-
-
 data class TransactionResponse(
     val transactionDTOS: TransactionDTOContent,
     val totalElements: Long
