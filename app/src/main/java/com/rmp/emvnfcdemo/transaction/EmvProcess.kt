@@ -342,6 +342,7 @@ class EmvProcess(
         val emvTimeFormat = "HHmmss"
         val displayTimeFormat = "HH:mm:ss"
         val date = Date()
+        
 
         transactionData.txnDate = SimpleDateFormat(emvDateFormat, Locale.getDefault()).format(date)
         transactionData.txnDateDisplay =
