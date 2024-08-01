@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.paypod">
 
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -24,16 +28,26 @@
         </activity>
 
         <!-- Main Activity -->
-        <activity android:name="com.example.paypod.MainActivity" />
+        <activity android:name="com.example.paypod.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
 
         <!-- Login Activity -->
-        <activity android:name="com.example.paypod.LoginActivity" />
-
-        <!-- Home Activity -->
-        <activity android:name="com.example.paypod.HomeActivity" />
+        <activity android:name="com.example.paypod.activities.LoginActivity" />
 
         <!-- History Activity -->
-        <activity android:name="com.example.paypod.HistoryActivity" />
+        <activity android:name="com.example.paypod.activities.HistoryActivity" />
 
     </application>
 

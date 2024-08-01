@@ -2,10 +2,9 @@
 <resources>
 
     <style name="Theme.PayPod" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/bluegrey</item>
+        <item name="colorAccent">@color/orange</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">

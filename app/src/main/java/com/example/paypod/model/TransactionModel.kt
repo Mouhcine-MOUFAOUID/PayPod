@@ -1,8 +1,4 @@
 package com.example.paypod.model
-data class TransactionResponse(
-    val transactionDTOS: TransactionDTOContent,
-    val totalElements: Long
-)
 
 data class TransactionDTOContent(
     val content: List<TransactionDTO>,
@@ -63,4 +59,25 @@ data class TransactionDTO(
     val voidTimestamp: Long = 0,
     val creditOrDebit: String = "",
     val settled: Boolean = false
+)
+
+data class TransactionRequest(
+    val primaryAcountNumber: String,
+    val processingCode: String,
+    val transactionAmount: Double,
+    val transmissionDateTime: String,
+    val dateTimeLocalTransaction: String,
+    val expirationDate: String,
+    val institutionId: String,
+    val merchantId: String,
+    val currencyCode: String,
+    val cvc: String,
+    val deviceId: String
+)
+
+data class TransactionResponse(
+    val status: String,
+    val responseCode: String,
+    val transactionDTOS: TransactionDTOContent,
+    val totalElements: Long
 )

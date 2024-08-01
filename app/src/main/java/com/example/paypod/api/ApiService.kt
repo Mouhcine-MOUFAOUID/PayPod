@@ -2,8 +2,10 @@ package com.example.paypod.api
 
 
 import com.example.paypod.model.TokenResponse
+import com.example.paypod.model.TransactionRequest
 import com.example.paypod.model.TransactionResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -32,4 +34,7 @@ interface ApiService {
         @Field("scope") scope:String
 
     ): Call<TokenResponse>
+
+    @POST("api/front-office/transaction-init")
+    fun initiateTransaction(@Body transactionRequest: TransactionRequest): Call<TransactionResponse>
 }

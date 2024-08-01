@@ -1,0 +1,27 @@
+R_DEF: Internal format may change without notice
+local
+drawable boder_gray
+id btn_0
+id btn_1
+id btn_2
+id btn_3
+id btn_4
+id btn_5
+id btn_6
+id btn_7
+id btn_8
+id btn_9
+id btn_cancel
+id btn_clear
+id btn_confirm
+id guideline10
+id guideline2
+id guideline3
+id guideline4
+id guideline5
+id guideline6
+id guideline7
+id guideline9
+id pin_label
+id view
+layout pin_entry_layout

@@ -59,8 +59,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
     implementation(libs.androidx.appcompat)
+    implementation(libs.converter.gson)
+    implementation(libs.androidx.material3.android)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.constraintlayout)
@@ -68,6 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended)
@@ -100,5 +102,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.logging.interceptor.v490)
     implementation(libs.androidx.activity.compose.v140)
+
+    implementation(libs.material3)
+    implementation(libs.library)
+    implementation(libs.places)
+    //implementation(libs.slf4j.api)
+    //implementation(libs.slf4j.nop)
 }
 
