@@ -64,29 +64,33 @@ fun MainScreen() {
 
 fun sendRequest(
     id: String,
-    transaction: MutableState<TransactionDTO>
+    transactionList: MutableState<List<TransactionDTO>>,
+    page: Int = 1
 ) {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.97:9902/")
+        .baseUrl("http://192.168.1.30:9902/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     val api = retrofit.create(ApiService::class.java)
 
-    // Use getTransactions method from UserApi
     val call: Call<TransactionResponse> = api.getTransactions()
 
     call.enqueue(object : Callback<TransactionResponse?> {
 
         override fun onResponse(call: Call<TransactionResponse?>, response: Response<TransactionResponse?>) {
             if (response.isSuccessful) {
-                Log.d("Main", "success!" + response.body().toString())
-                transaction.value = response.body()!!.transactionDTOS.content[0]
+                response.body()?.let {
+                    transactionList.value = it.transactionDTOS.content
+                }
+            } else {
+                Log.e("HistoryScreen", "Error: ${response.code()}")
             }
         }
 
         override fun onFailure(call: Call<TransactionResponse?>, t: Throwable) {
-            Log.e("Main", "Failed mate " + t.message.toString())
+            Log.e("HistoryScreen", "Failed to fetch transactions: ${t.message}")
         }
     })
 }
+

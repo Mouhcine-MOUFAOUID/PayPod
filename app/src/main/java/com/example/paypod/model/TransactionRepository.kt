@@ -13,7 +13,7 @@ class TransactionRepository {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.97:9902/")
+            .baseUrl("http://192.168.1.30:9902/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -27,11 +27,10 @@ class TransactionRepository {
             override fun onResponse(call: Call<TransactionResponse>, response: Response<TransactionResponse>) {
                 if (response.isSuccessful) {
                     val transactionResponse = response.body()
-                    // Handle successful response
                     println("Transaction successful: ${transactionResponse?.responseCode}")
                 } else {
-                    // Handle unsuccessful response
-                    println("Transaction failed: ${response.errorBody()?.string()}")
+                    val errorBody = response.errorBody()?.string()
+                    println("Transaction failed: $errorBody")
                 }
             }
 

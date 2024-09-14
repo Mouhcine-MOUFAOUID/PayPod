@@ -19,22 +19,25 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.paypod.R
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFAFAFA))
     ) {
-        HeaderSettings()
+        HeaderSettings(navController)
         SettingsOptionsSection()
+        Spacer(modifier = Modifier.weight(1f))
+        LogoutButton()
     }
 }
 
 @Composable
-fun HeaderSettings() {
+fun HeaderSettings(navController: NavController) {
     val orbitron = FontFamily(
         Font(R.font.orbitronbold),
     )
@@ -46,11 +49,13 @@ fun HeaderSettings() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back",
-            tint = Color.Black
-        )
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.Black
+            )
+        }
         Text(
             text = "Settings",
             fontSize = 24.sp,
@@ -59,7 +64,6 @@ fun HeaderSettings() {
         )
     }
 }
-
 
 @Composable
 fun SettingsOptionsSection() {
@@ -81,7 +85,7 @@ fun SettingItem(label: String, icon: ImageVector) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .background(Color.White, shape = RoundedCornerShape(8.dp))
+            //.background(Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -93,6 +97,33 @@ fun SettingItem(label: String, icon: ImageVector) {
         )
         Text(
             text = label,
+            fontSize = 16.sp,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun LogoutButton() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            //.background(Color.White, shape = RoundedCornerShape(8.dp)),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { /* Handle logout click */ }) {
+            Icon(
+                imageVector = Icons.Default.ExitToApp,
+                contentDescription = "Log Out",
+                tint = Color.Black
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Log Out",
             fontSize = 16.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold

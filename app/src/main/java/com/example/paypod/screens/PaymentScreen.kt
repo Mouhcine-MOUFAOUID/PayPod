@@ -1,6 +1,7 @@
 package com.example.paypod.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,13 +10,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.paypod.R
+import com.example.paypod.model.NFCViewModel
 
 @Composable
 fun PaymentScreen(navController: NavController) {
@@ -132,8 +136,7 @@ fun InputField(
             )
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.Black, // Text color
-            backgroundColor = Color.White, // Background color
+            textColor = Color.Black,
             cursorColor = Color.Black
         ),
         modifier = modifier
@@ -142,9 +145,9 @@ fun InputField(
     )
 }
 
-
 @Composable
 fun AmountRow(amount: String) {
+    val blackColor = colorResource(id = R.color.black)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,6 +161,7 @@ fun AmountRow(amount: String) {
                 .weight(1f)
                 .height(40.dp)
                 .background(Color.White)
+                .border(color = blackColor, width = 1.dp)
                 .padding(horizontal = 8.dp)
         ) {
             Text(text = amount, fontSize = 16.sp, color = Color.Black)
@@ -171,14 +175,14 @@ fun AmountRow(amount: String) {
 fun CurrencyDropdown() {
     var expanded by remember { mutableStateOf(false) }
     var selectedCurrency by remember { mutableStateOf("MAD") }
+    val bluegrey = colorResource(id = R.color.bluegrey)
 
     Box(
         modifier = Modifier
             .wrapContentSize(Alignment.TopStart)
-            .background(Color.White)
     ) {
         OutlinedButton(onClick = { expanded = true }) {
-            Text(text = selectedCurrency, fontSize = 16.sp)
+            Text(text = selectedCurrency, fontSize = 16.sp, color = bluegrey)
         }
         DropdownMenu(
             expanded = expanded,
@@ -188,7 +192,7 @@ fun CurrencyDropdown() {
                 selectedCurrency = "MAD"
                 expanded = false
             }) {
-                Text(text = "MAD")
+                Text(text = "MAD", color = bluegrey)
             }
             DropdownMenuItem(onClick = {
                 selectedCurrency = "EUR"
@@ -237,24 +241,38 @@ fun NumberPad(onButtonClick: (String) -> Unit) {
 @Composable
 fun ActionButtons(
     navController: NavController,
-    amount: String,
+    amount: String,  // Keep amount as String for input
     clientName: String,
     description: String,
     showDialog: Boolean,
     setShowDialog: (Boolean) -> Unit
 ) {
+    val nfcViewModel: NFCViewModel = viewModel()  // ViewModel for handling NFC logic
+    val blueColor = colorResource(id = R.color.blue)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         Button(
             onClick = {
-                if (clientName.isBlank() || description.isBlank() || amount.isBlank() || amount == "0") {
+                val enteredAmount = amount.toDoubleOrNull()  // Convert String to Double
+
+                if (clientName.isBlank() || description.isBlank() || enteredAmount == null || enteredAmount <= 0) {
+                    // Show dialog if any field is empty or amount is invalid
                     setShowDialog(true)
                 } else {
-                    navController.navigate("scan_screen/$amount")
+                    // Set the transaction amount in the ViewModel
+                    nfcViewModel.setTransactionAmount(enteredAmount)
+
+                    // Clear the navigation stack and navigate to ScanScreen
+                    navController.navigate("scan_screen/$enteredAmount") {
+                        popUpTo("payment_screen") { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
             },
+            colors = ButtonDefaults.buttonColors(backgroundColor = blueColor),
             modifier = Modifier.weight(1f)
         ) {
             Text(text = "Charge", color = Color.White)
@@ -269,3 +287,4 @@ fun ActionButtons(
         }
     }
 }
+

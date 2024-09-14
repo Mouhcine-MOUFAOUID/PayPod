@@ -2,13 +2,11 @@ package com.example.paypod.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.ComponentActivity
-import com.example.paypod.R
+import androidx.activity.compose.setContent
 import com.example.paypod.api.RetrofitInstance
 import com.example.paypod.model.TokenResponse
+import com.example.paypod.screens.LoginScreen
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,23 +14,21 @@ import retrofit2.Response
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
-        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
-        val loginButton = findViewById<Button>(R.id.buttonLogin)
-        val messageTextView = findViewById<TextView>(R.id.textViewWelcomeMessage1)
-
-        loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            login(username, password) { success, message ->
-                if (success) {
-                    navigateToHistoryActivity()
-                } else {
-                    messageTextView.text = message
+        setContent {
+            LoginScreen(
+                onLoginClick = { username, password ->
+                    login(username, password) { success, message ->
+                        if (success) {
+                            navigateToHistoryActivity()
+                        } else {
+                            // Update UI with the error message
+                        }
+                    }
+                },
+                onWelcomeMessageClick = {
+                    // Handle welcome message click if needed
                 }
-            }
+            )
         }
     }
 

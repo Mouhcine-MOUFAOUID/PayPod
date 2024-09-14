@@ -79,5 +79,6 @@ data class TransactionResponse(
     val status: String,
     val responseCode: String,
     val transactionDTOS: TransactionDTOContent,
-    val totalElements: Long
+    val totalElements: Long,
+    val page: Int
 )

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PayPod"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <!-- Splash Activity -->
+        <!-- Splash Activity (Launcher) -->
         <activity
             android:name="com.example.paypod.SplashActivity"
             android:exported="true"
@@ -27,20 +27,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Activity -->
-        <activity android:name="com.example.paypod.MainActivity"
+        <!-- Main Activity (no launcher intent) -->
+        <activity
+            android:name="com.example.paypod.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
 
         <!-- Login Activity -->

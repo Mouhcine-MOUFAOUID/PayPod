@@ -2,10 +2,7 @@ package com.example.paypod.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
@@ -21,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.paypod.R
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun SuccessScreen(navController: NavController, amount: String) {
@@ -62,8 +60,11 @@ fun SuccessScreen(navController: NavController, amount: String) {
         Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick = { /* Handle send SMS */ },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+            shape = RoundedCornerShape(8.dp)  // Slightly curved corners
         ) {
             Icon(
                 imageVector = Icons.Default.Sms,
@@ -82,8 +83,11 @@ fun SuccessScreen(navController: NavController, amount: String) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = { /* Handle send Email */ },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+            shape = RoundedCornerShape(8.dp)  // Slightly curved corners
         ) {
             Icon(
                 imageVector = Icons.Default.Email,
@@ -101,9 +105,12 @@ fun SuccessScreen(navController: NavController, amount: String) {
         }
         Spacer(modifier = Modifier.height(32.dp))
         Button(
-            onClick = { navController.navigate("HomeScreen") },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            shape = RoundedCornerShape(8.dp)  // Slightly curved corners
         ) {
             Text(
                 text = "Finish",
@@ -114,3 +121,4 @@ fun SuccessScreen(navController: NavController, amount: String) {
         }
     }
 }
+

@@ -17,16 +17,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.paypod.R
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFAFAFA))
     ) {
-        HeaderProfile()
+        HeaderProfile(navController)
         ProfileDetailsSection(
             username = "@username",
             firstName = "@firstname",
@@ -38,7 +39,7 @@ fun ProfileScreen() {
 }
 
 @Composable
-fun HeaderProfile() {
+fun HeaderProfile(navController: NavController) {
     val orbitron = FontFamily(
         Font(R.font.orbitronbold),
     )
@@ -50,11 +51,13 @@ fun HeaderProfile() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back",
-            tint = Color.Black
-        )
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.Black
+            )
+        }
         Text(
             text = "Profile",
             fontSize = 24.sp,

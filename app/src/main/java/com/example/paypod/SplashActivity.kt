@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.example.paypod.activities.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
 

@@ -106,7 +106,6 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.library)
     implementation(libs.places)
-    //implementation(libs.slf4j.api)
-    //implementation(libs.slf4j.nop)
-}
+    implementation(libs.androidx.core.ktx.v190)
 
+}

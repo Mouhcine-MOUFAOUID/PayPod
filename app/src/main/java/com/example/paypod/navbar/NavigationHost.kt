@@ -14,13 +14,13 @@ fun NavigationHost(navController: NavHostController) {
             HomeScreen()
         }
         composable(BottomNavItem.History.route) {
-            HistoryScreen()
+            HistoryScreen(navController)
         }
         composable(BottomNavItem.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController)
         }
         composable(BottomNavItem.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(navController)
         }
         composable(BottomNavItem.Payment.route) {
             PaymentScreen(navController)
@@ -28,6 +28,10 @@ fun NavigationHost(navController: NavHostController) {
         composable("success_screen/{amount}") { backStackEntry ->
             val amount = backStackEntry.arguments?.getString("amount") ?: ""
             SuccessScreen(navController, amount)
+        }
+        composable("confirm_screen/{amount}") { backStackEntry ->
+            val amount = backStackEntry.arguments?.getString("amount") ?: ""
+            ConfirmScreen(navController, amount)
         }
 
         composable("scan_screen/{amount}") { backStackEntry ->
