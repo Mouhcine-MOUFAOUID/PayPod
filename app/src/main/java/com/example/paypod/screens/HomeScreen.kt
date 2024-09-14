@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,9 +18,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.paypod.R
+import com.example.paypod.model.TransactionDTO
+import com.example.paypod.activities.sendRequest
 
 @Composable
 fun HomeScreen() {
+    val recentTransactions = remember { mutableStateOf(listOf<TransactionDTO>()) }
+
+    // Trigger the API request to fetch the recent transactions
+    LaunchedEffect(Unit) {
+        sendRequest("someId", recentTransactions)  // Adjust this based on your API call logic
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +38,7 @@ fun HomeScreen() {
         HeaderSection()
         UserInfoSection(username = "MMOUFAOUID")
         BalanceAmountSection(balance = "18.654,98 MAD")
-        RecentTransactionsSection()
+        RecentTransactionsSection(transactions = recentTransactions.value)
     }
 }
 
@@ -97,17 +106,24 @@ fun BalanceAmountSection(balance: String) {
 }
 
 @Composable
-fun RecentTransactionsSection() {
+fun RecentTransactionsSection(transactions: List<TransactionDTO>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        TransactionItem(date = "19-06-2024", amount = "243.00", username = "OABOUZOHOR", status = "Completed")
-        TransactionItem(date = "18-06-2024", amount = "103.00", username = "OABOUZOHOR", status = "Pending")
-        TransactionItem(date = "17-06-2024", amount = "201.00", username = "OABOUZOHOR", status = "Approved")
-        TransactionItem(date = "16-06-2024", amount = "298.00", username = "OABOUZOHOR", status = "Declined")
-        TransactionItem(date = "15-06-2024", amount = "120.00", username = "OABOUZOHOR", status = "Completed")
+        // Only show the last 5 transactions
+        val recentTransactions = transactions.takeLast(5)
+
+        recentTransactions.forEach { transaction ->
+            TransactionItem(
+                date = transaction.dateTimeLocalTransaction,
+                amount = "%.2f".format(transaction.transactionAmount),
+                username = transaction.primaryAcountNumber.takeLast(4),  // Mask or display PAN appropriately
+                status = transaction.status
+            )
+        }
+
         Text(
             text = "View All",
             color = Color.Blue,

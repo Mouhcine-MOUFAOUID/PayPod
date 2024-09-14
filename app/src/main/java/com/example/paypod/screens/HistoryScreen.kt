@@ -119,7 +119,7 @@ fun StatusFilter(selectedStatus: String, onStatusSelected: (String) -> Unit) {
 @Composable
 fun HistoryContent(
     selectedStatus: String,
-    transactions: List<TransactionDTO>, // Use the dynamic transaction data
+    transactions: List<TransactionDTO>,
     onTransactionClick: (TransactionDTO) -> Unit
 ) {
     // Make the content scrollable
@@ -163,7 +163,6 @@ fun HistoryTransactionItem(transaction: TransactionDTO, onClick: () -> Unit) {
             fontSize = 14.sp,
             color = Color.Black
         )
-        //Text(text = transaction.primaryAcountNumber, fontSize = 14.sp, color = Color.Black) // Update this based on your actual DTO
         Text(text = transaction.status, fontSize = 14.sp, color = Color.Black)
     }
 }

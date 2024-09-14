@@ -9,12 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableDoubleState
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.paypod.api.PcscProvider
 import com.github.devnied.emvnfccard.parser.EmvTemplate
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -36,8 +38,7 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
     val scanSuccess: StateFlow<Boolean> = _scanSuccess
 
     private val _transactionAmount = mutableDoubleStateOf(0.00)  // Variable to store transaction amount
-    private val transactionAmount: Double
-        get() = _transactionAmount.doubleValue
+    val transactionAmount: MutableDoubleState = _transactionAmount
 
     private var mNfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(application)
 
@@ -65,7 +66,7 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
         _cardNumber.value = ""
         _expirationDate.value = ""
         _scanSuccess.value = false
-        _transactionAmount.doubleValue = 0.00
+        setTransactionAmount(1.00)
     }
 
     fun setTransactionAmount(amount: Double) {
@@ -125,7 +126,7 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
                     val transactionRequest = TransactionRequest(
                         primaryAcountNumber = cardNumber,
                         processingCode = "001000",
-                        transactionAmount = transactionAmount,  // Use the dynamic amount directly
+                        transactionAmount = _transactionAmount.doubleValue,
                         transmissionDateTime = getFormattedDateTime(),
                         dateTimeLocalTransaction = getFormattedDateTime(),
                         expirationDate = "280615",
@@ -147,11 +148,7 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
                     if (attempts >= maxAttempts) {
                         Log.e("NFC", "Max attempts reached. Could not communicate with NFC tag.")
                     } else {
-                        try {
-                            kotlinx.coroutines.delay(delayBetweenAttempts)
-                        } catch (interruptedException: InterruptedException) {
-                            Log.e("NFC", "Coroutine delay interrupted", interruptedException)
-                        }
+                        delay(delayBetweenAttempts)
                     }
                 } catch (e: Exception) {
                     Log.e("NFC", "Exception during NFC tag communication", e)
@@ -166,4 +163,5 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
             }
         }
     }
+
 }

@@ -68,7 +68,9 @@ fun PaymentScreen(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            ActionButtons(navController, amount, clientName, description, showDialog, { showDialog = it })
+            ActionButtons(navController, amount, clientName, description, showDialog) {
+                showDialog = it
+            }
         }
 
         // Show dialog if showDialog is true
@@ -241,13 +243,13 @@ fun NumberPad(onButtonClick: (String) -> Unit) {
 @Composable
 fun ActionButtons(
     navController: NavController,
-    amount: String,  // Keep amount as String for input
+    amount: String,
     clientName: String,
     description: String,
     showDialog: Boolean,
     setShowDialog: (Boolean) -> Unit
 ) {
-    val nfcViewModel: NFCViewModel = viewModel()  // ViewModel for handling NFC logic
+    val nfcViewModel: NFCViewModel = viewModel()
     val blueColor = colorResource(id = R.color.blue)
 
     Row(
@@ -256,16 +258,15 @@ fun ActionButtons(
     ) {
         Button(
             onClick = {
-                val enteredAmount = amount.toDoubleOrNull()  // Convert String to Double
+                val enteredAmount = amount.toDoubleOrNull()
 
                 if (clientName.isBlank() || description.isBlank() || enteredAmount == null || enteredAmount <= 0) {
-                    // Show dialog if any field is empty or amount is invalid
                     setShowDialog(true)
                 } else {
                     // Set the transaction amount in the ViewModel
                     nfcViewModel.setTransactionAmount(enteredAmount)
 
-                    // Clear the navigation stack and navigate to ScanScreen
+                    // Navigate to ScanScreen with amount
                     navController.navigate("scan_screen/$enteredAmount") {
                         popUpTo("payment_screen") { inclusive = true }
                         launchSingleTop = true
@@ -287,4 +288,5 @@ fun ActionButtons(
         }
     }
 }
+
 

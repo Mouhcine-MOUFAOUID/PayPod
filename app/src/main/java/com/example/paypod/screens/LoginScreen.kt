@@ -3,7 +3,7 @@ package com.example.paypod.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -19,13 +19,18 @@ import com.example.paypod.R
 @Composable
 fun LoginScreen(
     onLoginClick: (String, String) -> Unit,
-    onWelcomeMessageClick: () -> Unit
+    onWelcomeMessageClick: () -> Unit,
+    errorMessage: String? // Added parameter for error message
 ) {
     val orbitronFont = FontFamily(Font(R.font.orbitron))
     val blueGreyColor = colorResource(id = R.color.bluegrey)
     val blueColor = colorResource(id = R.color.blue)
     val blackColor = colorResource(id = R.color.black)
     val whiteColor = colorResource(id = R.color.white)
+    val redColor = colorResource(id = R.color.orange) // Red color for error message
+
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -63,8 +68,8 @@ fun LoginScreen(
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = { /* Handle username input */ },
+            value = username,
+            onValueChange = { username = it },
             label = { Text("Username") },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
@@ -76,8 +81,8 @@ fun LoginScreen(
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = { /* Handle password input */ },
+            value = password,
+            onValueChange = { password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -90,7 +95,7 @@ fun LoginScreen(
         )
 
         Button(
-            onClick = { /* Handle login click */ },
+            onClick = { onLoginClick(username, password) },
             colors = ButtonDefaults.buttonColors(containerColor = blueColor, contentColor = whiteColor),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -98,6 +103,16 @@ fun LoginScreen(
                 .height(35.dp)
         ) {
             Text("SIGN IN")
+        }
+
+        errorMessage?.let { // Display the error message if it exists
+            Text(
+                text = it,
+                color = redColor,
+                fontFamily = orbitronFont,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }

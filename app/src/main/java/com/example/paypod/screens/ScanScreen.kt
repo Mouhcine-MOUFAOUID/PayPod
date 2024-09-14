@@ -77,6 +77,11 @@ fun ScanScreen(
         }
     }
 
+    // Synchronize amount from UI with ViewModel
+    LaunchedEffect(amount) {
+        nfcViewModel.setTransactionAmount(amount.toDoubleOrNull() ?: 1.00) // Default to 1.00 if parsing fails
+    }
+
     if (scanSuccess) {
         Log.d("ScanScreen", "Scan successful: Card Number: $cardNumber, Expiration Date: $expirationDate, Amount: $amount")
         LaunchedEffect(scanSuccess) {
@@ -89,7 +94,7 @@ fun ScanScreen(
         }
 
         AlertDialog(
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { /* Handle dismissal */ },
             title = { Text(text = "Scan succeeded") },
             text = {
                 Column {
@@ -100,7 +105,7 @@ fun ScanScreen(
             confirmButton = {
                 Button(onClick = {
                     nfcViewModel.resetScanState()
-                    if (amount.toDouble() <= 300) {
+                    if ((amount.toDoubleOrNull() ?: 0.0) <= 300) {
                         navController.navigate("success_screen/$amount") {
                             popUpTo(navController.graph.startDestinationId) {
                                 saveState = true

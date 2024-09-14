@@ -19,7 +19,7 @@ interface ApiService {
         "Accept: application/json"
     )
 
-    @GET("api/front-office/transactionId-search?status=Null&perPage=10&page=1&merchantId=20003&acquirer&issuer&date&transactionId&transactionType")
+    @GET("api/front-office/transactionId-search?status=Null&perPage=10&page=1&merchantId=20000&acquirer&issuer&date&transactionId&transactionType")
     fun getTransactions(): Call<TransactionResponse>
 
     @FormUrlEncoded
