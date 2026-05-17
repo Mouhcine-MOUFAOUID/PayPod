@@ -76,9 +76,11 @@ data class TransactionRequest(
 )
 
 data class TransactionResponse(
-    val status: String,
     val responseCode: String,
-    val transactionDTOS: TransactionDTOContent,
-    val totalElements: Long,
-    val page: Int
+    val responseActionCode: String,
+    val transactionId: String,
+    val transactionStatus: String,
+    val description: String,
+    val respTimestamp: Long,
+    val transactionDTOS: TransactionDTOContent
 )

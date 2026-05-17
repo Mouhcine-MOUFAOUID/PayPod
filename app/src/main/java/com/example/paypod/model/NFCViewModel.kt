@@ -163,5 +163,98 @@ class NFCViewModel(application: Application) : AndroidViewModel(application), Nf
             }
         }
     }
-
 }
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    override fun onTagDiscovered(tag: Tag?) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            var isoDep: IsoDep? = null
+//            var attempts = 0
+//            val maxAttempts = 3
+//            val delayBetweenAttempts = 500L // 500ms delay between attempts
+//
+//            while (attempts < maxAttempts) {
+//                try {
+//                    isoDep = IsoDep.get(tag)
+//                    isoDep?.connect()
+//
+//                    val provider = PcscProvider()
+//                    provider.setmTagCom(isoDep)
+//
+//                    val config = EmvTemplate.Config()
+//                        .setContactLess(true)
+//                        .setReadAllAids(true)
+//                        .setReadTransactions(true)
+//                        .setRemoveDefaultParsers(false)
+//                        .setReadAt(true)
+//
+//                    val parser = EmvTemplate.Builder()
+//                        .setProvider(provider)
+//                        .setConfig(config)
+//                        .build()
+//
+//                    val card = parser.readEmvCard()
+//                    val cardNumber = card.cardNumber ?: "Unknown"
+//                    Log.d("PaymentResultCardNumber", cardNumber)
+//
+//                    val formattedExpireDate = card.expireDate?.let {
+//                        SimpleDateFormat("MM/yy", Locale.getDefault()).format(it)
+//                    } ?: "Unknown"
+//
+//                    Log.d("PaymentResultDate", formattedExpireDate)
+//
+//                    _cardNumber.value = cardNumber
+//                    _expirationDate.value = formattedExpireDate
+//                    _scanSuccess.value = true
+//
+//                    // Send the transaction request using the dynamic amount directly
+//                    val transactionRequest = TransactionRequest(
+//                        primaryAcountNumber = cardNumber,
+//                        processingCode = "001000",
+//                        transactionAmount = _transactionAmount.doubleValue,
+//                        transmissionDateTime = getFormattedDateTime(),
+//                        dateTimeLocalTransaction = getFormattedDateTime(),
+//                        expirationDate = "280615",
+//                        institutionId = "00002",
+//                        merchantId = "20000",
+//                        currencyCode = "MAD",
+//                        cvc = "341",
+//                        deviceId = "200001"
+//                    )
+//
+//                    val repository = TransactionRepository()
+//                    val response = repository.initiateTransaction(transactionRequest)
+//
+//                    // Log the server response
+//                    Log.d("TransactionResponse", "Response Code: ${response.responseCode}, " +
+//                            "Action Code: ${response.responseActionCode}, " +
+//                            "Transaction ID: ${response.transactionId}, " +
+//                            "Status: ${response.transactionStatus}, " +
+//                            "Description: ${response.description}, " +
+//                            "Timestamp: ${response.respTimestamp}")
+//
+//                    break // Exit loop if successful
+//
+//                } catch (e: IOException) {
+//                    Log.e("NFC", "IOException during NFC tag communication, attempt ${attempts + 1} of $maxAttempts", e)
+//                    attempts++
+//                    if (attempts >= maxAttempts) {
+//                        Log.e("NFC", "Max attempts reached. Could not communicate with NFC tag.")
+//                    } else {
+//                        delay(delayBetweenAttempts)
+//                    }
+//                } catch (e: Exception) {
+//                    Log.e("NFC", "Exception during NFC tag communication", e)
+//                    break
+//                } finally {
+//                    try {
+//                        isoDep?.close()
+//                    } catch (e: IOException) {
+//                        Log.e("NFC", "IOException during IsoDep close", e)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//}

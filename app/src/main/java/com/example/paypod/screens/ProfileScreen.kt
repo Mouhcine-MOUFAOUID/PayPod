@@ -7,6 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,32 +20,56 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.paypod.R
+import com.example.paypod.model.ProfileViewModel
+
+private val orbitron = FontFamily(
+    Font(R.font.orbitronbold)
+)
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = viewModel()) {
+    val profile = viewModel.profile.observeAsState()
+    val loading = viewModel.isLoading.observeAsState(false) // Track loading state
+
+    LaunchedEffect(Unit) {
+        viewModel.getProfileDetails()  // Ensure the API call is triggered
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFAFAFA))
     ) {
         HeaderProfile(navController)
-        ProfileDetailsSection(
-            username = "@username",
-            firstName = "@firstname",
-            lastName = "@lastname",
-            email = "@email",
-            phone = "@phone"
-        )
+
+        when {
+            loading.value -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = Color.Black)
+                }
+            }
+            profile.value != null -> {
+                ProfileDetailsSection(
+                    username = profile.value?.login ?: "N/A",
+                    firstName = profile.value?.mainFirstName ?: "N/A",
+                    lastName = profile.value?.mainLastName ?: "N/A",
+                    email = profile.value?.mainEmail ?: "N/A",
+                    phone = profile.value?.mainPhoneNumber ?: "N/A"
+                )
+            }
+            else -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "Error loading profile.", color = Color.Red)
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun HeaderProfile(navController: NavController) {
-    val orbitron = FontFamily(
-        Font(R.font.orbitronbold),
-    )
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -80,6 +106,7 @@ fun ProfileDetailsSection(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+        // Username
         Text(
             text = username,
             fontSize = 24.sp,
@@ -90,9 +117,11 @@ fun ProfileDetailsSection(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
+
+        // Profile details
         ProfileItem(label = "First Name:", value = firstName)
         ProfileItem(label = "Last Name:", value = lastName)
-        ProfileItem(label = "E-mail:", value = email)
+        ProfileItem(label = "Email:", value = email)
         ProfileItem(label = "Phone:", value = phone)
     }
 }

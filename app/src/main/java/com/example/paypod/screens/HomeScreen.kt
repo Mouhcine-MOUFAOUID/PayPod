@@ -39,6 +39,8 @@ fun HomeScreen() {
         UserInfoSection(username = "MMOUFAOUID")
         BalanceAmountSection(balance = "18.654,98 MAD")
         RecentTransactionsSection(transactions = recentTransactions.value)
+        Spacer(modifier = Modifier.height(16.dp))  // Space between transactions and card
+        CurrencyExchangeCard()  // Added Currency Exchange Card
     }
 }
 
@@ -124,11 +126,11 @@ fun RecentTransactionsSection(transactions: List<TransactionDTO>) {
             )
         }
 
-        Text(
-            text = "View All",
-            color = Color.Blue,
-            modifier = Modifier.align(Alignment.End)
-        )
+//        Text(
+//            text = "View All",
+//            color = Color.Blue,
+//            modifier = Modifier.align(Alignment.End)
+//        )
     }
 }
 
@@ -144,7 +146,51 @@ fun TransactionItem(date: String, amount: String, username: String, status: Stri
     ) {
         Text(text = date, fontSize = 14.sp, color = Color.Black)
         Text(text = amount, fontSize = 14.sp, color = Color.Black)
-        Text(text = username, fontSize = 14.sp, color = Color.Black)
         Text(text = status, fontSize = 14.sp, color = Color.Black)
+    }
+}
+
+@Composable
+fun CurrencyExchangeCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(Color.White),
+        shape = RoundedCornerShape(12.dp),
+        elevation = 8.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Currency Exchange Rates",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            // Sample currency rates
+            CurrencyRateRow(currency = "USD", rate = "1 USD = 10.5 MAD")
+            CurrencyRateRow(currency = "EUR", rate = "1 EUR = 11.2 MAD")
+            CurrencyRateRow(currency = "GBP", rate = "1 GBP = 12.9 MAD")
+            CurrencyRateRow(currency = "CAD", rate = "1 CAD = 7.8 MAD")
+        }
+    }
+}
+
+@Composable
+fun CurrencyRateRow(currency: String, rate: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = currency, fontSize = 16.sp, color = Color.Black)
+        Text(text = rate, fontSize = 16.sp, color = Color.Black)
     }
 }

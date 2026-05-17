@@ -1,10 +1,11 @@
 package com.example.paypod.api
 
-
+import com.example.paypod.model.ProfileDetails
 import com.example.paypod.model.TokenResponse
 import com.example.paypod.model.TransactionRequest
 import com.example.paypod.model.TransactionResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -15,12 +16,13 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @Headers(
-        "Accept: application/json"
-    )
-
+    @Headers("Accept: application/json")
     @GET("api/front-office/transactionId-search?status=Null&perPage=10&page=1&merchantId=20000&acquirer&issuer&date&transactionId&transactionType")
     fun getTransactions(): Call<TransactionResponse>
+
+    // Getting profile information
+    @GET("api/setting/merchants/5/details?language=en")
+    suspend fun getProfileDetails(): Response<ProfileDetails>
 
     @FormUrlEncoded
     @POST("realms/{realm}/protocol/openid-connect/token")
@@ -28,11 +30,10 @@ interface ApiService {
         @Path("realm") realm: String,
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("grant_type") grantType: String = "password", // Default value
+        @Field("grant_type") grantType: String = "password",
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
-        @Field("scope") scope:String
-
+        @Field("scope") scope: String
     ): Call<TokenResponse>
 
     @POST("api/front-office/transaction-init")

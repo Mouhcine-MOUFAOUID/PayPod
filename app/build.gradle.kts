@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -107,5 +108,10 @@ dependencies {
     implementation(libs.library)
     implementation(libs.places)
     implementation(libs.androidx.core.ktx.v190)
+
+    implementation(libs.androidx.ui.text)
+    implementation(libs.androidx.ui.v100)
+
+
 
 }

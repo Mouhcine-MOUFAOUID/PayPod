@@ -8,12 +8,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TransactionRepository {
+    
 
     private val apiService: ApiService
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.30:9902/")
+            .baseUrl("http://192.168.8.100:9902/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

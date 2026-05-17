@@ -68,7 +68,7 @@ fun sendRequest(
     page: Int = 1
 ) {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.30:9902/")
+        .baseUrl("http://192.168.8.100:9902/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
